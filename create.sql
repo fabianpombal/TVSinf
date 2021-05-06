@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS Clientes;
 
 
 CREATE TABLE Gradas (
-	nombre_grada varchar(10) PRIMARY KEY NOT NULL,
+	nombre varchar(10) PRIMARY KEY NOT NULL,
 	num_max_localidades INT NOT NULL
 );
 
@@ -60,7 +60,7 @@ CREATE TABLE Clientes (
 );
 
 CREATE TABLE Localidades(
-	numero INT PRIMARY KEY NOT NULL,
+	numero varchar(5) PRIMARY KEY NOT NULL,
 	estado varchar(30),
 	material varchar(30),
 	visibilidad varchar(30)
@@ -80,4 +80,33 @@ CREATE TABLE tiene(
 	nombre_grada varchar(10),
 	FOREIGN KEY (nombre_recinto) REFERENCES Recintos(nombre),
 	FOREIGN KEY (nombre_grada) REFERENCES Gradas (nombre_grada) 
+);
+
+CREATE table participan(
+	nombre_espectaculo varchar(30) NOT NULL,
+	dni_participante varchar(9) NOT NULL,
+	FOREIGN KEY(nombre_espectaculo) REFERENCES Participantes(dni),
+	FOREIGN KEY(dni_participante) REFERENCES Espectaculo(nombre)
+);
+
+CREATE table paga(
+	precio int not null,
+	dni_cliente varchar(9) not null,
+	nombre_grada varchar(10) not null,
+	FOREIGN KEY(dni_cliente) REFERENCES Clientes(dni),
+	FOREIGN KEY(nombre_grada) REFERENCES Gradas(nombre)
+);
+
+CREATE table se_agrupa_en(
+	numero_localidades varchar(5) not null,
+	nombre_grada varchar(10) not null,
+	FOREIGN KEY(numero_localidades) REFERENCES Localidades(numero),
+	FOREIGN KEY(nombre_grada) REFERENCES Gradas(nombre)
+);
+
+CREATE table reserva(
+	numero_localidades varchar(5) not null,
+	dni_cliente varchar(9) not null,
+	FOREIGN KEY(numero_localidades) REFERENCES Localidades(numero),
+	FOREIGN KEY(dni_cliente) REFERENCES Clientes(dni)
 );
