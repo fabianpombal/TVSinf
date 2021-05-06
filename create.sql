@@ -1,3 +1,5 @@
+CREATE database taquilla_virtual;
+use taquilla_virtual;
 DROP TABLE IF EXISTS se_celebra_en;/*Relaciona recintos con espectaculos*/
 DROP TABLE IF EXISTS tiene;/*Relaciona recintos con gradas*/
 DROP TABLE IF EXISTS se_agrupa_en;/*Relaciona gradas con localidades*/
@@ -79,7 +81,7 @@ CREATE TABLE tiene(
 	nombre_recinto varchar(30),
 	nombre_grada varchar(10),
 	FOREIGN KEY (nombre_recinto) REFERENCES Recintos(nombre),
-	FOREIGN KEY (nombre_grada) REFERENCES Gradas (nombre_grada) 
+	FOREIGN KEY (nombre_grada) REFERENCES Gradas (nombre) 
 );
 
 CREATE table participan(
