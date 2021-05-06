@@ -1,15 +1,16 @@
-DROP TABLE IF EXISTS Gradas;
-DROP TABLE IF EXISTS Localidades;
-DROP TABLE IF EXISTS Recintos;
-DROP TABLE IF EXISTS Espectaculo;
-DROP TABLE IF EXISTS Participantes;
-DROP TABLE IF EXISTS Clientes;
 DROP TABLE IF EXISTS se_celebra_en;/*Relaciona recintos con espectaculos*/
 DROP TABLE IF EXISTS tiene;/*Relaciona recintos con gradas*/
 DROP TABLE IF EXISTS se_agrupa_en;/*Relaciona gradas con localidades*/
 DROP TABLE IF EXISTS paga;/*Relaciona clientes con gradas*/
 DROP TABLE IF EXISTS reserva;/*Relaciona clientes con localidades*/
 DROP TABLE IF EXISTS participan;/*Relaciona Espectaculos con Participantes*/
+DROP TABLE IF EXISTS Gradas;
+DROP TABLE IF EXISTS Localidades;
+DROP TABLE IF EXISTS Recintos;
+DROP TABLE IF EXISTS Espectaculo;
+DROP TABLE IF EXISTS Participantes;
+DROP TABLE IF EXISTS Clientes;
+
 
 CREATE TABLE Gradas (
 	nombre_grada varchar(10) PRIMARY KEY NOT NULL,
@@ -65,11 +66,18 @@ CREATE TABLE Localidades(
 	visibilidad varchar(30)
 );
 
-CREATE TABLE celebra_en(
+CREATE TABLE se_celebra_en(
 	nombre_recinto varchar(30) NOT NULL,
-	localizacion varchar(100) NOT NULL,
+	/*localizacion varchar(100) NOT NULL,*/
 	nombre_espectaculo varchar(30) NOT NULL,
 	anho INT NOT NULL,
-	FOREIGN KEY(nombre_recinto) REFERENCES Recintos(nombre),
+	FOREIGN KEY(nombre_recinto) REFERENCES Recintos(nombre),/*MIRAR FOREIGN KEYS*/
 	FOREIGN KEY(nombre_espectaculo) REFERENCES Espectaculo(nombre)
+);
+
+CREATE TABLE tiene(
+	nombre_recinto varchar(30),
+	nombre_grada varchar(10),
+	FOREIGN KEY (nombre_recinto) REFERENCES Recintos(nombre),
+	FOREIGN KEY (nombre_grada) REFERENCES Gradas (nombre_grada) 
 );
