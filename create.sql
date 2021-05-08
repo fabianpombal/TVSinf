@@ -70,11 +70,11 @@ CREATE TABLE Localidades(
 
 CREATE TABLE se_celebra_en(
 	nombre_recinto varchar(30) NOT NULL,
-	/*localizacion varchar(100) NOT NULL,*/
+	localizacion varchar(100) NOT NULL,
 	nombre_espectaculo varchar(30) NOT NULL,
 	anho INT NOT NULL,
-	FOREIGN KEY(nombre_recinto) REFERENCES Recintos(nombre),
-	FOREIGN KEY(nombre_espectaculo) REFERENCES Espectaculo(nombre)
+	FOREIGN KEY(nombre_recinto,localizacion) REFERENCES Recintos(nombre,localizacion),
+	FOREIGN KEY(nombre_espectaculo,anho) REFERENCES Espectaculo(nombre,anho)
 );
 
 CREATE TABLE tiene(
@@ -100,9 +100,9 @@ CREATE table paga(
 );
 
 CREATE table se_agrupa_en(
-	numero_localidades varchar(5) not null,
+	numero_localidad varchar(5) not null,
 	nombre_grada varchar(10) not null,
-	FOREIGN KEY(numero_localidades) REFERENCES Localidades(numero),
+	FOREIGN KEY(numero_localidad) REFERENCES Localidades(numero),
 	FOREIGN KEY(nombre_grada) REFERENCES Gradas(nombre)
 );
 
@@ -123,7 +123,8 @@ CREATE TABLE Precios (
 	tipo_espectador varchar(10),
 	nombre_grada varchar(10),
 	nombre_espectaculo varchar(10),
-	PRIMARY KEY (tipo_espectador,nombre_grada,nombre_espectaculo),
+	anho INT,
+	PRIMARY KEY (tipo_espectador,nombre_grada,nombre_espectaculo,anho),
 	FOREIGN KEY(nombre_grada) REFERENCES Gradas(nombre),
-	FOREIGN KEY(nombre_espectaculo) REFERENCES Espectaculo(nombre)
+	FOREIGN KEY(nombre_espectaculo,anho) REFERENCES Espectaculo(nombre,anho)
 );
