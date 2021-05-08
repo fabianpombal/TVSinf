@@ -24,10 +24,11 @@ CREATE TABLE Espectaculo(
 	anho INT NOT NULL,
 	descripcion varchar(100),
 	tipo varchar(10),
+	fecha datetime,
 	duracion INT NOT NULL,
 	propietario varchar(30),
 	CONSTRAINT check_anho CHECK(anho>1800 AND anho<=2021),
-	PRIMARY KEY (nombre,anho)
+	PRIMARY KEY (nombre,anho,fecha)
 );
 
 CREATE TABLE Participantes (
@@ -73,8 +74,9 @@ CREATE TABLE se_celebra_en(
 	localizacion varchar(100) NOT NULL,
 	nombre_espectaculo varchar(30) NOT NULL,
 	anho INT NOT NULL,
+	fecha_espectaculo datetime,
 	FOREIGN KEY(nombre_recinto,localizacion) REFERENCES Recintos(nombre,localizacion),
-	FOREIGN KEY(nombre_espectaculo,anho) REFERENCES Espectaculo(nombre,anho)
+	FOREIGN KEY(nombre_espectaculo,anho,fecha_espectaculo) REFERENCES Espectaculo(nombre,anho,fecha)
 );
 
 CREATE TABLE tiene(
