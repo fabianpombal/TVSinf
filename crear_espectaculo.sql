@@ -2,7 +2,7 @@ delimiter //
 
 DROP PROCEDURE IF EXISTS crear_espectaculo //
 
-CREATE PROCEDURE crear_espectaculo (IN nombre_esp varchar(30),IN anho_esp INT, IN tipo_esp_in varchar(10),IN descripcion_esp varchar(100),
+CREATE PROCEDURE crear_espectaculo (IN nombre_esp varchar(30),IN anho_esp INT,in fecha_in datetime,IN tipo_esp_in varchar(10),IN descripcion_esp varchar(100),
     IN duracion_esp INT, IN propietario_esp varchar(30),IN nombre_rec varchar(30), IN localizacion_rec varchar(100),
     IN lista_gradas MEDIUMTEXT,IN lista_localidades MEDIUMTEXT,IN lista_espectadores MEDIUMTEXT, IN lista_precios MEDIUMTEXT)
 
@@ -28,8 +28,8 @@ DECLARE localidad MEDIUMTEXT;
 DECLARE long_localidad_aux INT;
 DECLARE localidad_aux varchar(5);
 
-INSERT INTO Espectaculo VALUES(nombre_esp,anho_esp,descripcion_esp,tipo_esp_in,duracion_esp,propietario_esp);
-INSERT INTO se_celebra_en VALUES(nombre_rec,localizacion_rec,nombre_esp,anho_esp);
+INSERT INTO Espectaculo VALUES(nombre_esp,anho_esp,descripcion_esp,tipo_esp_in,fecha_in,duracion_esp,propietario_esp);
+INSERT INTO se_celebra_en VALUES(nombre_rec,localizacion_rec,nombre_esp,anho_esp,fecha_in);
 
 
 iterator:
