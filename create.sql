@@ -9,8 +9,8 @@ DROP TABLE IF EXISTS participan;/*Relaciona Espectaculos con Participantes*/
 DROP TABLE IF EXISTS Gradas;
 DROP TABLE IF EXISTS Localidades;
 DROP TABLE IF EXISTS Recintos;
-DROP TABLE IF EXISTS Espectaculo;
 DROP TABLE IF EXISTS Participantes;
+DROP TABLE IF EXISTS Espectaculo;
 DROP TABLE IF EXISTS Clientes;
 
 
@@ -21,25 +21,22 @@ CREATE TABLE Gradas (
 
 CREATE TABLE Espectaculo(
 	nombre varchar(30) NOT NULL,
-	anho INT NOT NULL,
 	descripcion varchar(100),
 	tipo varchar(10),
 	fecha datetime,
 	duracion INT NOT NULL,
 	propietario varchar(30),
-	CONSTRAINT check_anho CHECK(anho>1800 AND anho<=2021),
-	PRIMARY KEY (nombre,anho,fecha)
+	PRIMARY KEY (nombre,fecha)
 );
 
 CREATE TABLE Participantes (
 	dni varchar(9) PRIMARY KEY NOT NULL,
 	nombre varchar(30) NOT NULL,
 	apellido1 varchar(30) NOT NULL,
-	apellido2 varchar(30) NOT NULL
-	/*nombre_espectaculo varchar(30) NOT NULL,
-	anho INT NOT NULL,
-	CONSTRAINT check_anho CHECK(anho>1800 AND anho<2021),
-	FOREIGN KEY(nombre_espectaculo,anho) REFERENCES Espectaculo(nombre,anho)*/
+	apellido2 varchar(30) NOT NULL,
+	nombre_espectaculo varchar(30) NOT NULL,
+	fecha datetime,
+	FOREIGN KEY(nombre_espectaculo,fecha) REFERENCES Espectaculo(nombre,fecha)
 );
 
 CREATE TABLE Recintos(
@@ -73,10 +70,9 @@ CREATE TABLE se_celebra_en(
 	nombre_recinto varchar(30) NOT NULL,
 	localizacion varchar(100) NOT NULL,
 	nombre_espectaculo varchar(30) NOT NULL,
-	anho INT NOT NULL,
 	fecha_espectaculo datetime,
 	FOREIGN KEY(nombre_recinto,localizacion) REFERENCES Recintos(nombre,localizacion),
-	FOREIGN KEY(nombre_espectaculo,anho,fecha_espectaculo) REFERENCES Espectaculo(nombre,anho,fecha)
+	FOREIGN KEY(nombre_espectaculo,fecha_espectaculo) REFERENCES Espectaculo(nombre,fecha)
 );
 
 CREATE TABLE tiene(
@@ -125,8 +121,8 @@ CREATE TABLE Precios (
 	tipo_espectador varchar(10),
 	nombre_grada varchar(10),
 	nombre_espectaculo varchar(10),
-	anho INT,
-	PRIMARY KEY (tipo_espectador,nombre_grada,nombre_espectaculo,anho),
+	fecha datetime,
+	PRIMARY KEY (tipo_espectador,nombre_grada,nombre_espectaculo,fecha),
 	FOREIGN KEY(nombre_grada) REFERENCES Gradas(nombre),
-	FOREIGN KEY(nombre_espectaculo,anho) REFERENCES Espectaculo(nombre,anho)
+	FOREIGN KEY(nombre_espectaculo,fecha) REFERENCES Espectaculo(nombre,fecha)
 );
