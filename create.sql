@@ -1,5 +1,5 @@
-CREATE database taquilla_virtual;
-use taquilla_virtual;
+DROP TABLE IF EXISTS Reserva;
+DROP TABLE IF EXISTS Precios;
 DROP TABLE IF EXISTS se_celebra_en;/*Relaciona recintos con espectaculos*/
 DROP TABLE IF EXISTS tiene;/*Relaciona recintos con gradas*/
 DROP TABLE IF EXISTS se_agrupa_en;/*Relaciona gradas con localidades*/
@@ -23,10 +23,10 @@ CREATE TABLE Espectaculo(
 	nombre varchar(30) NOT NULL,
 	anho INT NOT NULL,
 	descripcion varchar(100),
-	tipo varchar(10) NOT NULL,
+	tipo varchar(10),
 	duracion INT NOT NULL,
 	propietario varchar(30),
-	CONSTRAINT check_anho CHECK(anho>1800 AND anho<2021),
+	CONSTRAINT check_anho CHECK(anho>1800 AND anho<=2021),
 	PRIMARY KEY (nombre,anho)
 );
 
@@ -46,7 +46,7 @@ CREATE TABLE Recintos(
 	localizacion varchar(100),
 	tipo varchar(10),
 	aforo INT NOT NULL,
-	CONSTRAINT check_tipo CHECK(tipo='estadio' OR tipo='pabellon' OR tipo='teatro'),
+	CONSTRAINT check_tipo_rec CHECK(tipo='estadio' OR tipo='pabellon' OR tipo='teatro'),
 	PRIMARY KEY(nombre,localizacion)
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE Clientes (
 	dni varchar(9) PRIMARY KEY NOT NULL,
 	nombre varchar(30) NOT NULL,
 	apellido1 varchar(30) NOT NULL,
-	apellido2 varchar(30) NOT NULL,
+	apellido2 varchar(30),
 	iban varchar(24) NOT NULL,
 	titular_nombre varchar(30) NOT NULL,
 	titular_apellido1 varchar(30) NOT NULL,
@@ -73,7 +73,7 @@ CREATE TABLE se_celebra_en(
 	/*localizacion varchar(100) NOT NULL,*/
 	nombre_espectaculo varchar(30) NOT NULL,
 	anho INT NOT NULL,
-	FOREIGN KEY(nombre_recinto) REFERENCES Recintos(nombre),/*MIRAR FOREIGN KEYS*/
+	FOREIGN KEY(nombre_recinto) REFERENCES Recintos(nombre),
 	FOREIGN KEY(nombre_espectaculo) REFERENCES Espectaculo(nombre)
 );
 
@@ -106,9 +106,24 @@ CREATE table se_agrupa_en(
 	FOREIGN KEY(nombre_grada) REFERENCES Gradas(nombre)
 );
 
-CREATE table reserva(
-	numero_localidades varchar(5) not null,
-	dni_cliente varchar(9) not null,
-	FOREIGN KEY(numero_localidades) REFERENCES Localidades(numero),
-	FOREIGN KEY(dni_cliente) REFERENCES Clientes(dni)
+
+CREATE TABLE Reserva (
+	id_reserva INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+	instante timestamp,
+	penaliza BOOLEAN DEFAULT FALSE,
+	dni varchar(9) not null,
+	nombre_espectaculo varchar(30),
+	importe DECIMAL (6,2),
+	FOREIGN KEY (nombre_espectaculo) REFERENCES Espectaculo(nombre),
+	FOREIGN KEY (dni) REFERENCES Clientes(dni)
+);
+
+CREATE TABLE Precios (
+	precio DECIMAL(6,2) NOT NULL,
+	tipo_espectador varchar(10),
+	nombre_grada varchar(10),
+	nombre_espectaculo varchar(10),
+	PRIMARY KEY (tipo_espectador,nombre_grada,nombre_espectaculo),
+	FOREIGN KEY(nombre_grada) REFERENCES Gradas(nombre),
+	FOREIGN KEY(nombre_espectaculo) REFERENCES Espectaculo(nombre)
 );
